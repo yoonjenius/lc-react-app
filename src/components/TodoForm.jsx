@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
+TodoForm.prototype = {
+  addTodo: PropTypes.func,
+};
+
 function TodoForm(props) {
   const [NewTodo, setNewTodo] = useState('');
   const handleSubmit = (event) => {
@@ -24,9 +28,5 @@ function TodoForm(props) {
     </form>
   );
 }
-
-TodoForm.prototype = {
-  addTodo: PropTypes.func,
-};
 
 export default TodoForm;

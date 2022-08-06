@@ -98,6 +98,15 @@ function App() {
     setTodos(Todos.filter((todo) => !todo.isComplete));
   };
 
+  const TodosFiltered = (filter) => {
+    if (filter === 'all') {
+      return Todos;
+    } else if (filter === 'active') {
+      return Todos.filter((todo) => !todo.isComplete);
+    } else if (filter === 'completed') {
+      return Todos.filter((todo) => todo.isComplete);
+    }
+  };
   return (
     <div className="todo-app-container">
       <div className="todo-app">
@@ -111,9 +120,10 @@ function App() {
             updateTodo={UpdateTodo}
             cancelEditing={CancelEditing}
             deleteTodo={DeleteTodo}
-            clearAll={CheckAllTodos}
+            checkAll={CheckAllTodos}
             remaining={RemainingTodos}
             clearCompleted={ClearCompleted}
+            todosFiltered={TodosFiltered}
           />
         ) : (
           <NoTodos />

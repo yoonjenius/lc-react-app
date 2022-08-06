@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import TodoRemaining from './TodoRemaining';
 import ClearCompleted from './ClearCompleted';
+import CheckAll from './CheckAll';
+import TodoFilters from './TodoFilters';
 
 TodoList.prototype = {
   todos: PropTypes.array.isRequired, // ? in typescript
@@ -10,15 +12,19 @@ TodoList.prototype = {
   updateTodo: PropTypes.func.isRequired,
   cancelEditing: PropTypes.func.isRequired,
   deleteTodo: PropTypes.func.isRequired,
-  clearAll: PropTypes.func.isRequired,
+  checkAll: PropTypes.func.isRequired,
   remaining: PropTypes.number.isRequired,
+  clearCompleted: PropTypes.func.isRequired,
+  todosFiltered: PropTypes.func.isRequired,
 };
 
 export default function TodoList(props) {
+  const [Filter, setFilter] = useState('all');
+
   return (
     <React.Fragment>
       <ul className="todo-list">
-        {props.todos.map((todo, index) => (
+        {props.todosFiltered(Filter).map((todo, index) => (
           <li className="todo-item-container" key={index}>
             <div className="todo-item">
               <input type="checkbox" onChange={() => props.completeTodo(todo)} checked={todo.isComplete ? true : false} />
@@ -56,19 +62,11 @@ export default function TodoList(props) {
         ))}
       </ul>
       <div className="check-all-container">
-        <div>
-          <div className="button" onClick={() => props.clearAll()}>
-            Check All
-          </div>
-        </div>
+        <CheckAll checkAll={props.checkAll} />
         <TodoRemaining remaining={props.remaining} />
       </div>
       <div className="other-buttons-container">
-        <div>
-          <button className="button filter-button filter-button-active">All</button>
-          <button className="button filter-button">Active</button>
-          <button className="button filter-button">Completed</button>
-        </div>
+        <TodoFilters todosFiltered={props.todosFiltered} filter={Filter} setFilter={setFilter} />
         <ClearCompleted clear={props.clearCompleted} />
       </div>
     </React.Fragment>
