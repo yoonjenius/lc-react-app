@@ -1,31 +1,36 @@
-import React, { useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import NoTodos from './NoTodos';
 import TodoForm from './TodoForm';
 import '../styles/App.css';
 import '../styles/React.css';
 import TodoList from './TodoList';
+import useLocalStorage from '../hooks/useLocalStorage';
 
 function App() {
-  const [Todos, setTodos] = useState([
-    {
-      id: 1,
-      title: 'Finish React Series',
-      isComplete: false,
-      isEditing: false,
-    },
-    {
-      id: 2,
-      title: 'Go to Grocery',
-      isComplete: true,
-      isEditing: false,
-    },
-    {
-      id: 3,
-      title: 'Do other things',
-      isComplete: false,
-      isEditing: false,
-    },
-  ]);
+  // const [Name, setName] = useState('');
+  const [Name, setName] = useLocalStorage('name', '');
+  const nameInput = useRef(null);
+  const [Todos, setTodos] = useLocalStorage('todo', []);
+  // const [Todos, setTodos] = useState([
+  //   {
+  //     id: 1,
+  //     title: 'Finish React Series',
+  //     isComplete: false,
+  //     isEditing: false,
+  //   },
+  //   {
+  //     id: 2,
+  //     title: 'Go to Grocery',
+  //     isComplete: true,
+  //     isEditing: false,
+  //   },
+  //   {
+  //     id: 3,
+  //     title: 'Do other things',
+  //     isComplete: false,
+  //     isEditing: false,
+  //   },
+  // ]);
 
   const [IdForTodo, setIdForTodo] = useState(Todos.length + 1);
 
@@ -107,10 +112,40 @@ function App() {
       return Todos.filter((todo) => todo.isComplete);
     }
   };
+
+  useEffect(() => {
+    //<button onClick={() => nameInput.current.focus()}>Get Ref</button>
+    // console.log('use effect running');
+    // nameInput.current.focus(); //커서 포커스가..
+    // return function cleanup()
+    //   console.log('cleaning up');
+    // };
+    // setName(JSON.parse(localStorage.getItem('name')) ?? '');
+  }, []);
+
+  const handleName = (event) => {
+    let name = event.target.value;
+    // localStorage.setItem('name', JSON.stringify(name));
+    setName(name);
+  };
   return (
     <div className="todo-app-container">
       <div className="todo-app">
-        <h2>Todo App</h2>
+        <div className="name-container">
+          <h2 className="todo-header">What is your name?</h2>
+          <form action="#">
+            <input
+              type="text"
+              ref={nameInput}
+              className="todo-input"
+              value={Name}
+              onChange={(e) => handleName(e)}
+              placeholder="What is your name?"
+            />
+          </form>
+          {Name && <p className="name-label">Hello, {Name}</p>}
+        </div>
+        <h2 className="todo-header">Todo App</h2>
         <TodoForm addTodo={AddTodo} />
         {Todos.length > 0 ? (
           <TodoList

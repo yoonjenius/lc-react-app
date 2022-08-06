@@ -4,6 +4,7 @@ import TodoRemaining from './TodoRemaining';
 import ClearCompleted from './ClearCompleted';
 import CheckAll from './CheckAll';
 import TodoFilters from './TodoFilters';
+import useToggle from '../hooks/useToggle';
 
 TodoList.prototype = {
   todos: PropTypes.array.isRequired, // ? in typescript
@@ -20,6 +21,8 @@ TodoList.prototype = {
 
 export default function TodoList(props) {
   const [Filter, setFilter] = useState('all');
+  const [IsFeaturesOneVisible, setIsFeaturesOneVisible] = useToggle(false);
+  const [IsFeaturesTwoVisible, setIsFeaturesTwoVisible] = useToggle(false);
 
   return (
     <React.Fragment>
@@ -61,14 +64,28 @@ export default function TodoList(props) {
           </li>
         ))}
       </ul>
-      <div className="check-all-container">
-        <CheckAll checkAll={props.checkAll} />
-        <TodoRemaining remaining={props.remaining} />
+
+      <div className="toggles-container">
+        <button onClick={setIsFeaturesOneVisible} className="button">
+          Features One Toggle
+        </button>
+        <button onClick={setIsFeaturesTwoVisible} className="button">
+          Features One Toggle
+        </button>
       </div>
-      <div className="other-buttons-container">
-        <TodoFilters todosFiltered={props.todosFiltered} filter={Filter} setFilter={setFilter} />
-        <ClearCompleted clear={props.clearCompleted} />
-      </div>
+
+      {IsFeaturesOneVisible && (
+        <div className="check-all-container">
+          <CheckAll checkAll={props.checkAll} />
+          <TodoRemaining remaining={props.remaining} />
+        </div>
+      )}
+      {IsFeaturesTwoVisible && (
+        <div className="other-buttons-container">
+          <TodoFilters todosFiltered={props.todosFiltered} filter={Filter} setFilter={setFilter} />
+          <ClearCompleted clear={props.clearCompleted} />
+        </div>
+      )}
     </React.Fragment>
   );
 }
