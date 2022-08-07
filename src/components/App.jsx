@@ -6,6 +6,7 @@ import '../styles/React.css';
 import TodoList from './TodoList';
 import useLocalStorage from '../hooks/useLocalStorage';
 import { TodosContext } from '../context/TodoContext';
+import { CSSTransition, SwitchTransition } from 'react-transition-group';
 
 function App() {
   // const [Name, setName] = useState('');
@@ -146,27 +147,41 @@ function App() {
                 placeholder="What is your name?"
               />
             </form>
-            {Name && <p className="name-label">Hello, {Name}</p>}
+            {/* {Name && <p className="name-label">Hello, {Name}</p>} */}
+            <CSSTransition in={Name.length > 0} timeout={200} classNames="slide-vertical" unmountOnExit>
+              <p className="name-label">Hello, {Name}</p>
+            </CSSTransition>
           </div>
           <h2 className="todo-header">Todo App</h2>
           {/* <TodoForm addTodo={AddTodo} /> */}
           <TodoForm />
-          {Todos.length > 0 ? (
-            <TodoList
-            // todos={Todos}
-            // completeTodo={ChangeIsComplete}
-            // markAsEditing={MarkAsEditing}
-            // updateTodo={UpdateTodo}
-            // cancelEditing={CancelEditing}
-            // deleteTodo={DeleteTodo}
-            // checkAll={CheckAllTodos}
-            // remaining={RemainingTodos}
-            // clearCompleted={ClearCompleted}
-            // todosFiltered={TodosFiltered}
-            />
-          ) : (
+          {/* {Todos.length > 0 ? (
+              <TodoList
+              // todos={Todos}
+              // completeTodo={ChangeIsComplete}
+              // markAsEditing={MarkAsEditing}
+              // updateTodo={UpdateTodo}
+              // cancelEditing={CancelEditing}
+              // deleteTodo={DeleteTodo}
+              // checkAll={CheckAllTodos}
+              // remaining={RemainingTodos}
+              // clearCompleted={ClearCompleted}
+              // todosFiltered={TodosFiltered}
+              />
+            ) : (
+              <NoTodos />
+            )} */}
+          {/* <CSSTransition in={Todos.length > 0} timeout={300} classNames="slide-vertical" unmountOnExit>
+            <TodoList />
+          </CSSTransition>
+          <CSSTransition in={Todos.length === 0} timeout={300} classNames="slide-vertical" unmountOnExit>
             <NoTodos />
-          )}
+          </CSSTransition> */}
+          <SwitchTransition mode="out-in">
+            <CSSTransition key={Todos.length > 0} timeout={200} classNames="slide-vertical" unmountOnExit>
+              {Todos.length > 0 ? <TodoList /> : <NoTodos />}
+            </CSSTransition>
+          </SwitchTransition>
         </div>
       </div>
     </TodosContext.Provider>
