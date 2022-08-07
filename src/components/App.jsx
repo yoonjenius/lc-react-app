@@ -37,74 +37,74 @@ function App() {
   const [IdForTodo, setIdForTodo] = useState(Todos.length + 1);
   const [Filter, setFilter] = useState('all');
 
-  const AddTodo = (todo) => {
-    let obj = {
-      id: IdForTodo,
-      title: todo,
-      isComplete: false,
-    };
+  // const AddTodo = (todo) => {
+  //   let obj = {
+  //     id: IdForTodo,
+  //     title: todo,
+  //     isComplete: false,
+  //   };
 
-    // setTodos([...Todos, obj]);
-    setTodos(Todos.concat(obj));
-    setIdForTodo((prevId) => prevId + 1);
-  };
+  //   // setTodos([...Todos, obj]);
+  //   setTodos(Todos.concat(obj));
+  //   setIdForTodo((prevId) => prevId + 1);
+  // };
 
-  const DeleteTodo = (todo) => {
-    setTodos(Todos.filter((t) => t.id !== todo.id));
-  };
+  // const DeleteTodo = (todo) => {
+  //   setTodos(Todos.filter((t) => t.id !== todo.id));
+  // };
 
-  const ChangeIsComplete = (todo) => {
-    const findTodo = Todos.find((t) => t.id === todo.id);
-    const updateTodo = { ...findTodo, isComplete: !findTodo.isComplete };
-    setTodos(Todos.map((t) => (t.id === updateTodo.id ? updateTodo : t)));
-    // setTodos(Todos.filter((t) => (t.id === todo.id ? { ...todo, isComplete: !todo.isComplete } : t)));
-  };
+  // const ChangeIsComplete = (todo) => {
+  //   const findTodo = Todos.find((t) => t.id === todo.id);
+  //   const updateTodo = { ...findTodo, isComplete: !findTodo.isComplete };
+  //   setTodos(Todos.map((t) => (t.id === updateTodo.id ? updateTodo : t)));
+  //   // setTodos(Todos.filter((t) => (t.id === todo.id ? { ...todo, isComplete: !todo.isComplete } : t)));
+  // };
 
-  const MarkAsEditing = (todo) => {
-    const findTodo = Todos.find((t) => t.id === todo.id);
-    const updateTodo = { ...findTodo, isEditing: true };
-    setTodos(Todos.map((t) => (t.id === updateTodo.id ? updateTodo : t)));
-  };
+  // const MarkAsEditing = (todo) => {
+  //   const findTodo = Todos.find((t) => t.id === todo.id);
+  //   const updateTodo = { ...findTodo, isEditing: true };
+  //   setTodos(Todos.map((t) => (t.id === updateTodo.id ? updateTodo : t)));
+  // };
 
-  const UpdateTodo = (event, todo) => {
-    event.preventDefault();
-    let update = event.target.value;
+  // const UpdateTodo = (event, todo) => {
+  //   event.preventDefault();
+  //   let update = event.target.value;
 
-    if (update.trim().length === 0) {
-      return;
-    }
+  //   if (update.trim().length === 0) {
+  //     return;
+  //   }
 
-    let updatedObj = { ...todo, title: update, isEditing: false };
-    setTodos(Todos.map((t) => (t.id === updatedObj.id ? updatedObj : t)));
-  };
+  //   let updatedObj = { ...todo, title: update, isEditing: false };
+  //   setTodos(Todos.map((t) => (t.id === updatedObj.id ? updatedObj : t)));
+  // };
 
-  const CancelEditing = (event, todo) => {
-    event.preventDefault();
-    let update = event.target.value;
+  // const CancelEditing = (event, todo) => {
+  //   event.preventDefault();
+  //   let update = event.target.value;
 
-    if (update.trim().length === 0) {
-      return;
-    }
+  //   if (update.trim().length === 0) {
+  //     return;
+  //   }
 
-    let updatedObj = { ...todo, isEditing: false };
-    setTodos(Todos.map((t) => (t.id === updatedObj.id ? updatedObj : t)));
-  };
+  //   let updatedObj = { ...todo, isEditing: false };
+  //   setTodos(Todos.map((t) => (t.id === updatedObj.id ? updatedObj : t)));
+  // };
 
-  const CheckAllTodos = () => {
-    setTodos(
-      Todos.map((todo) => {
-        return { ...todo, isComplete: true };
-      })
-    );
-  };
+  // const CheckAllTodos = () => {
+  //   setTodos(
+  //     Todos.map((todo) => {
+  //       return { ...todo, isComplete: true };
+  //     })
+  //   );
+  // };
 
-  const RemainingTodos = () => {
-    return Todos.filter((todo) => !todo.isComplete).length;
-  };
+  // const RemainingTodos = () => {
+  //   return Todos.filter((todo) => !todo.isComplete).length;
+  // };
 
-  const ClearCompleted = () => {
-    setTodos(Todos.filter((todo) => !todo.isComplete));
-  };
+  // const ClearCompleted = () => {
+  //   setTodos(Todos.filter((todo) => !todo.isComplete));
+  // };
 
   const TodosFiltered = () => {
     if (Filter === 'all') {
@@ -133,29 +133,28 @@ function App() {
   };
   return (
     <TodosContext.Provider value={{ Todos, setTodos, IdForTodo, setIdForTodo, Filter, setFilter, TodosFiltered }}>
-      <div className="todo-app-container">
-        <div className="todo-app">
-          <div className="name-container">
-            <h2 className="todo-header">What is your name?</h2>
-            <form action="#">
-              <input
-                type="text"
-                ref={nameInput}
-                className="todo-input"
-                value={Name}
-                onChange={(e) => handleName(e)}
-                placeholder="What is your name?"
-              />
-            </form>
-            {/* {Name && <p className="name-label">Hello, {Name}</p>} */}
-            <CSSTransition in={Name.length > 0} timeout={200} classNames="slide-vertical" unmountOnExit>
-              <p className="name-label">Hello, {Name}</p>
-            </CSSTransition>
-          </div>
-          <h2 className="todo-header">Todo App</h2>
-          {/* <TodoForm addTodo={AddTodo} /> */}
-          <TodoForm />
-          {/* {Todos.length > 0 ? (
+      <div className="todo-app">
+        <div className="name-container">
+          <h2 className="todo-header">What is your name?</h2>
+          <form action="#">
+            <input
+              type="text"
+              ref={nameInput}
+              className="todo-input"
+              value={Name}
+              onChange={(e) => handleName(e)}
+              placeholder="What is your name?"
+            />
+          </form>
+          {/* {Name && <p className="name-label">Hello, {Name}</p>} */}
+          <CSSTransition in={Name.length > 0} timeout={200} classNames="slide-vertical" unmountOnExit>
+            <p className="name-label">Hello, {Name}</p>
+          </CSSTransition>
+        </div>
+        <h2 className="todo-header">Todo App</h2>
+        {/* <TodoForm addTodo={AddTodo} /> */}
+        <TodoForm />
+        {/* {Todos.length > 0 ? (
               <TodoList
               // todos={Todos}
               // completeTodo={ChangeIsComplete}
@@ -171,18 +170,17 @@ function App() {
             ) : (
               <NoTodos />
             )} */}
-          {/* <CSSTransition in={Todos.length > 0} timeout={300} classNames="slide-vertical" unmountOnExit>
+        {/* <CSSTransition in={Todos.length > 0} timeout={300} classNames="slide-vertical" unmountOnExit>
             <TodoList />
           </CSSTransition>
           <CSSTransition in={Todos.length === 0} timeout={300} classNames="slide-vertical" unmountOnExit>
             <NoTodos />
           </CSSTransition> */}
-          <SwitchTransition mode="out-in">
-            <CSSTransition key={Todos.length > 0} timeout={200} classNames="slide-vertical" unmountOnExit>
-              {Todos.length > 0 ? <TodoList /> : <NoTodos />}
-            </CSSTransition>
-          </SwitchTransition>
-        </div>
+        <SwitchTransition mode="out-in">
+          <CSSTransition key={Todos.length > 0} timeout={200} classNames="slide-vertical" unmountOnExit>
+            {Todos.length > 0 ? <TodoList /> : <NoTodos />}
+          </CSSTransition>
+        </SwitchTransition>
       </div>
     </TodosContext.Provider>
   );

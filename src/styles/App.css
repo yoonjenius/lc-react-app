@@ -181,11 +181,12 @@ nav ul {
 }
 
 nav ul li:not(:first-child) {
-  margin-left: 16px;
+  margin-left: 24px;
 }
 
 .active {
   font-weight: bold;
+  color: black;
 }
 
 /* Transitions  */
