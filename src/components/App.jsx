@@ -5,34 +5,36 @@ import '../styles/App.css';
 import '../styles/React.css';
 import TodoList from './TodoList';
 import useLocalStorage from '../hooks/useLocalStorage';
+import { TodosContext } from '../context/TodoContext';
 
 function App() {
   // const [Name, setName] = useState('');
   const [Name, setName] = useLocalStorage('name', '');
   const nameInput = useRef(null);
-  const [Todos, setTodos] = useLocalStorage('todo', []);
-  // const [Todos, setTodos] = useState([
-  //   {
-  //     id: 1,
-  //     title: 'Finish React Series',
-  //     isComplete: false,
-  //     isEditing: false,
-  //   },
-  //   {
-  //     id: 2,
-  //     title: 'Go to Grocery',
-  //     isComplete: true,
-  //     isEditing: false,
-  //   },
-  //   {
-  //     id: 3,
-  //     title: 'Do other things',
-  //     isComplete: false,
-  //     isEditing: false,
-  //   },
-  // ]);
+  // const [Todos, setTodos] = useLocalStorage('todo', []);
+  const [Todos, setTodos] = useState([
+    {
+      id: 1,
+      title: 'Finish React Series',
+      isComplete: false,
+      isEditing: false,
+    },
+    {
+      id: 2,
+      title: 'Go to Grocery',
+      isComplete: true,
+      isEditing: false,
+    },
+    {
+      id: 3,
+      title: 'Do other things',
+      isComplete: false,
+      isEditing: false,
+    },
+  ]);
 
   const [IdForTodo, setIdForTodo] = useState(Todos.length + 1);
+  const [Filter, setFilter] = useState('all');
 
   const AddTodo = (todo) => {
     let obj = {
@@ -103,25 +105,25 @@ function App() {
     setTodos(Todos.filter((todo) => !todo.isComplete));
   };
 
-  const TodosFiltered = (filter) => {
-    if (filter === 'all') {
+  const TodosFiltered = () => {
+    if (Filter === 'all') {
       return Todos;
-    } else if (filter === 'active') {
+    } else if (Filter === 'active') {
       return Todos.filter((todo) => !todo.isComplete);
-    } else if (filter === 'completed') {
+    } else if (Filter === 'completed') {
       return Todos.filter((todo) => todo.isComplete);
     }
   };
 
-  useEffect(() => {
-    //<button onClick={() => nameInput.current.focus()}>Get Ref</button>
-    // console.log('use effect running');
-    // nameInput.current.focus(); //커서 포커스가..
-    // return function cleanup()
-    //   console.log('cleaning up');
-    // };
-    // setName(JSON.parse(localStorage.getItem('name')) ?? '');
-  }, []);
+  // useEffect(() => {
+  //   <button onClick={() => nameInput.current.focus()}>Get Ref</button>
+  //   console.log('use effect running');
+  //   nameInput.current.focus(); //커서 포커스가..
+  //   return function cleanup()
+  //     console.log('cleaning up');
+  //   };
+  //   setName(JSON.parse(localStorage.getItem('name')) ?? '');
+  // }, []);
 
   const handleName = (event) => {
     let name = event.target.value;
@@ -129,42 +131,45 @@ function App() {
     setName(name);
   };
   return (
-    <div className="todo-app-container">
-      <div className="todo-app">
-        <div className="name-container">
-          <h2 className="todo-header">What is your name?</h2>
-          <form action="#">
-            <input
-              type="text"
-              ref={nameInput}
-              className="todo-input"
-              value={Name}
-              onChange={(e) => handleName(e)}
-              placeholder="What is your name?"
+    <TodosContext.Provider value={{ Todos, setTodos, IdForTodo, setIdForTodo, Filter, setFilter, TodosFiltered }}>
+      <div className="todo-app-container">
+        <div className="todo-app">
+          <div className="name-container">
+            <h2 className="todo-header">What is your name?</h2>
+            <form action="#">
+              <input
+                type="text"
+                ref={nameInput}
+                className="todo-input"
+                value={Name}
+                onChange={(e) => handleName(e)}
+                placeholder="What is your name?"
+              />
+            </form>
+            {Name && <p className="name-label">Hello, {Name}</p>}
+          </div>
+          <h2 className="todo-header">Todo App</h2>
+          {/* <TodoForm addTodo={AddTodo} /> */}
+          <TodoForm />
+          {Todos.length > 0 ? (
+            <TodoList
+            // todos={Todos}
+            // completeTodo={ChangeIsComplete}
+            // markAsEditing={MarkAsEditing}
+            // updateTodo={UpdateTodo}
+            // cancelEditing={CancelEditing}
+            // deleteTodo={DeleteTodo}
+            // checkAll={CheckAllTodos}
+            // remaining={RemainingTodos}
+            // clearCompleted={ClearCompleted}
+            // todosFiltered={TodosFiltered}
             />
-          </form>
-          {Name && <p className="name-label">Hello, {Name}</p>}
+          ) : (
+            <NoTodos />
+          )}
         </div>
-        <h2 className="todo-header">Todo App</h2>
-        <TodoForm addTodo={AddTodo} />
-        {Todos.length > 0 ? (
-          <TodoList
-            todos={Todos}
-            completeTodo={ChangeIsComplete}
-            markAsEditing={MarkAsEditing}
-            updateTodo={UpdateTodo}
-            cancelEditing={CancelEditing}
-            deleteTodo={DeleteTodo}
-            checkAll={CheckAllTodos}
-            remaining={RemainingTodos}
-            clearCompleted={ClearCompleted}
-            todosFiltered={TodosFiltered}
-          />
-        ) : (
-          <NoTodos />
-        )}
       </div>
-    </div>
+    </TodosContext.Provider>
   );
 }
 export default App;

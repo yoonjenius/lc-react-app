@@ -1,23 +1,34 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
+import { TodosContext } from '../context/TodoContext';
 
-TodoForm.prototype = {
-  addTodo: PropTypes.func,
-};
+// TodoForm.prototype = {
+//   addTodo: PropTypes.func,
+// };
 
-function TodoForm(props) {
+function TodoForm() {
+  const { Todos, setTodos, IdForTodo, setIdForTodo } = useContext(TodosContext);
   const [NewTodo, setNewTodo] = useState('');
-  const handleSubmit = (event) => {
+
+  const AddTodo = (event) => {
     event.preventDefault();
     if (NewTodo.trim().length === 0) {
       return;
     }
-    props.addTodo(NewTodo);
+    // props.addTodo(NewTodo);
+    let obj = {
+      id: IdForTodo,
+      title: NewTodo,
+      isComplete: false,
+    };
+
+    setTodos(Todos.concat(obj));
+    setIdForTodo((prevId) => prevId + 1);
     setNewTodo('');
   };
 
   return (
-    <form action="#" onSubmit={(e) => handleSubmit(e)}>
+    <form action="#" onSubmit={(e) => AddTodo(e)}>
       <input
         type="text"
         className="todo-input"
